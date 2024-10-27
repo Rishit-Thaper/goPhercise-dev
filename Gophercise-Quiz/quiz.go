@@ -27,7 +27,18 @@ func main() {
 		os.Exit(1)
 	}
 	problems := createProblems(lines)
-	fmt.Println(problems)
+	var count int = 0
+	for i, problem := range problems {
+		fmt.Printf("Problem #%d: %s\n", i+1, problem.q)
+		var answer string
+		fmt.Scanln(&answer)
+		if answer == problem.a {
+			count = count + 1
+		} else {
+			fmt.Printf("Your Score was %d:", count)
+			return
+		}
+	}
 }
 
 func createProblems(rawProblemSet [][]string) []problem {
