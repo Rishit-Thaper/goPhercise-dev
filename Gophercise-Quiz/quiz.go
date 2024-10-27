@@ -35,10 +35,13 @@ func main() {
 		if answer == problem.a {
 			count = count + 1
 		} else {
-			fmt.Printf("Your Score was %d:", count)
-			return
+			break
 		}
 	}
+	fmt.Printf("Your final score is %d out of %d.\n", count, len(problems))
+
+	fmt.Println("Press Enter to exit...")
+	fmt.Scanln()
 }
 
 func createProblems(rawProblemSet [][]string) []problem {
