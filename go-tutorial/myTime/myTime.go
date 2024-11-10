@@ -16,4 +16,6 @@ func main() {
 	createdDate := time.Date(2024, time.July, 9, 03, 0, 0, 0, time.UTC)
 	fmt.Println("Created Time: ", createdDate)
 
+	//go build myTime.go will create a binary executable file
+	//GOOS="darwin" go build myTime.go will create a executable file for mac or any other OS just specify the OS like unix linux
 }
