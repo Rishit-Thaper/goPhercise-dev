@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 type User struct {
@@ -54,16 +56,58 @@ func getUsers(c *gin.Context) {
 
 func addUsers(c *gin.Context) {
 	var newUser User
+	fmt.Println("newUser", newUser)
 	if err := c.BindJSON(&newUser); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+		return
+	} else {
+		users = append(users, newUser)
+		c.JSON(http.StatusCreated, users)
+	}
+}
+
+func editUser(c *gin.Context) {
+	id := c.Param("userId")
+	fmt.Println("id", id)
+	var updatedUser User
+	userId, err := strconv.Atoi(id)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
 		return
 	}
+	if err := c.BindJSON(&updatedUser); err != nil {
+		fmt.Println(err)
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+		return
+	} else {
+		for i, user := range users {
+			if userId == user.ID {
+				fmt.Println("user to be updated", user)
+				users[i] = updatedUser
+				c.JSON(http.StatusCreated, users)
+				return
+			}
+		}
+	}
+}
 
-	users = append(users, newUser)
-
-	fmt.Println(users)
-
-	c.JSON(http.StatusCreated, users)
+func deletetUser(c *gin.Context) {
+	id := c.Param("userId")
+	fmt.Println("id", id)
+	userId, err := strconv.Atoi(id)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+		return
+	} else {
+		for i, user := range users {
+			if userId == user.ID {
+				fmt.Println("user to be deleted", user)
+				users = append(users[:i], users[i+1:]...)
+				c.JSON(http.StatusOK, gin.H{"Message": "Deleted Successfully", "users": users})
+				return
+			}
+		}
+	}
 }
 
 func main() {
@@ -71,5 +115,7 @@ func main() {
 	router := gin.Default()
 	router.GET("/users", getUsers)
 	router.POST("/add-users", addUsers)
+	router.PUT("/edit-users/:userId", editUser)
+	router.DELETE("/delete-users/:userId", deletetUser)
 	router.Run("localhost:8080")
 }
