@@ -7,23 +7,23 @@ import (
 	"os"
 	"strconv"
 
+	// import (direct)	Used when you need to directly call methods, functions, or types from the package.
 	"github.com/gin-gonic/gin"
+
+	//The _ is used as a "blank identifier." It means you are importing the package only for its side effects and not directly using any of its functions or types in your code.
+	//import _	Used to enable side effects (e.g., registering a database driver) without referencing it.
 	_ "github.com/go-sql-driver/mysql"
+
+	// import (direct)	Used when you need to directly call methods, functions, or types from the package.
 	"github.com/joho/godotenv"
 )
 
+// @TODO: Remove this upto line 61
 type User struct {
 	ID    int    `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 	Age   int    `json:"age"`
-}
-
-type DBConfig struct {
-	Username string
-	Password string
-	DBUrl    string
-	DBName   string
 }
 
 var users = []User{
@@ -60,6 +60,19 @@ var users = []User{
 	},
 }
 
+
+// @TODO: Refactor the code by dividing it into multiple files and folders.
+// Each file will focus on a specific functionality or module, 
+// improving abstraction, readability, and maintainability.
+// that code will be in a seperate repo.
+type DBConfig struct {
+	Username string
+	Password string
+	DBUrl    string
+	DBName   string
+}
+
+// access the db credentials, like we do in node/express code
 func getDBConfig() DBConfig {
 	return DBConfig{
 		Username: getEnvVariables("DB_USERNAME"),
@@ -69,6 +82,7 @@ func getDBConfig() DBConfig {
 	}
 }
 
+// access env's in the go code
 func getEnvVariables(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -78,6 +92,7 @@ func getEnvVariables(key string) string {
 	return value
 }
 
+// connecting to db function
 func connectToDB(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("mysql", dsn)
 
@@ -96,11 +111,13 @@ func connectToDB(dsn string) (*sql.DB, error) {
 	return db, nil
 }
 
+// @TODO: The following function will be implemented with proper DB integration
 func getUsers(c *gin.Context) {
 	fmt.Println(users)
 	c.IndentedJSON(http.StatusOK, users)
 }
 
+// @TODO: The following function will be implemented with proper DB integration
 func addUsers(c *gin.Context) {
 	var newUser User
 	fmt.Println("newUser", newUser)
@@ -113,6 +130,7 @@ func addUsers(c *gin.Context) {
 	}
 }
 
+// @TODO: The following function will be implemented with proper DB integration
 func editUser(c *gin.Context) {
 	id := c.Param("userId")
 	fmt.Println("id", id)
@@ -138,6 +156,7 @@ func editUser(c *gin.Context) {
 	}
 }
 
+// @TODO: The following function will be implemented with proper DB integration
 func deletetUser(c *gin.Context) {
 	id := c.Param("userId")
 	fmt.Println("id", id)
