@@ -60,9 +60,8 @@ var users = []User{
 	},
 }
 
-
 // @TODO: Refactor the code by dividing it into multiple files and folders.
-// Each file will focus on a specific functionality or module, 
+// Each file will focus on a specific functionality or module,
 // improving abstraction, readability, and maintainability.
 // that code will be in a seperate repo.
 type DBConfig struct {

@@ -13,7 +13,7 @@ func main() {
 	fmt.Println("Structs in Go")
 	//no inheritance in go
 	//no super or parent
-	
+
 	userDetail := []User{{"Rishit", "rishit@dev.in", 21}, {"Rishu", "rishu@dev.in", 21}}
 	for index := range userDetail {
 		fmt.Println("User ", index+1, " is ", userDetail[index])
